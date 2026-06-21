@@ -285,7 +285,7 @@ elif tab_choice == "Incident Detail":
             [1.0,  "#7B1FA2"],
         ],
         zmin=0, zmax=rho_jam,
-        colorbar=dict(title="Density<br>(veh/km)", tickfont=dict(color="white"), titlefont=dict(color="white")),
+        colorbar=dict(title=dict(text="Density<br>(veh/km)", font=dict(color="white")), tickfont=dict(color="white")),
     ))
     # Mark incident position and duration
     inc_pos_km = result.config.incident_cell * 0.2
@@ -418,7 +418,7 @@ elif tab_choice == "What-If":
             y=result.time_axis_min,
             colorscale=[[0.0,"#0E9F6E"],[0.4,"#F2A93B"],[0.7,"#E5484D"],[1.0,"#7B1FA2"]],
             zmin=0, zmax=rho_jam,
-            colorbar=dict(title="veh/km", tickfont=dict(color="white"), titlefont=dict(color="white")),
+            colorbar=dict(title=dict(text="veh/km", font=dict(color="white")), tickfont=dict(color="white")),
         ))
         inc_pos = result.config.incident_cell * 0.2
         fig_wi.add_vline(x=inc_pos, line_color="white", line_dash="dash", line_width=2,

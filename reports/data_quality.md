@@ -1,4 +1,4 @@
-# Data Quality Report â€” Gridlock / Bengaluru Traffic Events
+# Data Quality Report — Gridlock / Bengaluru Traffic Events
 
 **Total rows after cleaning:** 8,173
 **Active (right-censored, duration unknown):** 1,007  (12.3%)
