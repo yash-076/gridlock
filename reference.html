@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridlock — Flipkart Hackathon</title>
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --grid:rgba(17,17,17,.07);
+    --ink:#111110;
+    --muted:#6E6E69;
+    --line:rgba(17,17,17,.14);
+    --green:#0E9F6E;
+    --green-bg:rgba(14,159,110,.07);
+    --red:#E5484D;
+    --amber:#F2A93B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow-x:hidden;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:28px clamp(20px,5vw,56px) 0;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .signal{
+    width:14px;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    padding:4px 3px;
+    background:var(--ink);
+    border-radius:3px;
+  }
+  .signal i{
+    width:6px;height:6px;border-radius:50%;
+    background:rgba(255,255,255,.25);
+    display:block;
+  }
+  .signal i.red{--c:var(--red); animation:cycle 3.6s ease-in-out infinite;}
+  .signal i.amber{--c:var(--amber); animation:cycle 3.6s ease-in-out infinite; animation-delay:1.2s;}
+  .signal i.green{--c:var(--green); animation:cycle 3.6s ease-in-out infinite; animation-delay:2.4s;}
+
+  @keyframes cycle{
+    0%, 27%{ background:var(--c); }
+    33%, 100%{ background:rgba(255,255,255,.25); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .signal i{ animation:none !important; }
+    .signal i.green{ background:var(--green); }
+  }
+
+  .brand-text{
+    font-size:12px;
+    letter-spacing:.06em;
+    line-height:1.35;
+    font-weight:600;
+  }
+  .brand-text span{
+    display:block;
+    font-weight:400;
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:.04em;
+  }
+
+  .pill{
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:12px;
+    color:var(--green);
+    border:1px solid var(--green);
+    background:var(--green-bg);
+    padding:5px 12px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+
+  main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px clamp(20px,6vw,56px);
+  }
+
+  h1{
+    margin:0;
+    display:inline-flex;
+    align-items:center;
+    font-family:"Arial Black","Helvetica Neue",Arial,sans-serif;
+    font-weight:900;
+    letter-spacing:-.02em;
+    line-height:.92;
+    font-size:clamp(64px, 14vw, 190px);
+  }
+  h1 .dots{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.14em;
+    margin:0 .07em;
+  }
+  h1 .dots i{
+    display:block;
+    width:.17em;
+    height:.17em;
+    border-radius:50%;
+  }
+  h1 .dots i.red{ background:var(--red); }
+  h1 .dots i.amber{ background:var(--amber); }
+  h1 .dots i.green{ background:var(--green); }
+
+  .subtitle{
+    margin:18px 0 0;
+    font-size:clamp(13px,1.6vw,17px);
+    letter-spacing:.14em;
+    color:var(--muted);
+    font-weight:500;
+    text-transform:uppercase;
+  }
+
+  .tag{
+    margin-top:28px;
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:13px;
+    color:var(--green);
+    border:1px solid var(--green);
+    background:var(--green-bg);
+    padding:7px 16px;
+    border-radius:3px;
+    max-width:90vw;
+  }
+
+  footer{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:14px;
+    padding:0 24px 30px;
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--muted);
+    text-transform:uppercase;
+  }
+  footer .arrow{ color:var(--line); }
+
+  @media (max-width:520px){
+    .topbar{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="signal"><i class="red"></i><i class="amber"></i><i class="green"></i></div>
+    <div class="brand-text">FLIPKART<span>GRIDLOCK HACKATHON</span></div>
+  </div>
+  <div class="pill">[ solve . traffic ]</div>
+</div>
+
+<main>
+  <h1><span>GR</span><span class="dots"><i class="red"></i><i class="amber"></i><i class="green"></i></span><span>DLOCK</span></h1>
+  <p class="subtitle">Event-driven congestion forecasting &amp; response simulation</p>
+  <div class="tag">[ impact prediction &middot; flow simulation &middot; resource planning ]</div>
+</main>
+
+<footer>
+  <span>predict</span><span class="arrow">&rarr;</span><span>simulate</span><span class="arrow">&rarr;</span><span>recommend</span>
+</footer>
+
+</body>
+</html>

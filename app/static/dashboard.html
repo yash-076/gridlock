@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRIDLOCK — Dashboard</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<header class="topbar">
+  <a href="/" class="brand-link">
+    <div class="signal"><i class="red"></i><i class="amber"></i><i class="green"></i></div>
+    <div class="brand-text">GR<span class="dot-r">●</span><span class="dot-a">●</span><span class="dot-g">●</span>DLOCK</div>
+  </a>
+  <nav class="tabs" id="nav-tabs">
+    <button class="tab active" data-tab="replay">Replay Mode</button>
+    <button class="tab" data-tab="detail">Incident Detail</button>
+    <button class="tab" data-tab="calibration">Calibration</button>
+    <button class="tab" data-tab="whatif">What-If</button>
+  </nav>
+  <div class="pill">[ predict → simulate → recommend ]</div>
+</header>
+
+<!-- ═══ REPLAY TAB ═══ -->
+<section class="panel" id="panel-replay">
+  <div class="panel-header">
+    <h2>Live Replay — Bengaluru Traffic Incidents</h2>
+    <div class="controls-row">
+      <label class="ctrl-label">Date
+        <select id="date-select" class="ctrl-select"></select>
+      </label>
+      <label class="ctrl-label">Timeline
+        <input type="range" id="timeline-slider" min="0" max="1" value="1" class="ctrl-range">
+      </label>
+      <span id="incident-counter" class="pill-sm">0 / 0 incidents</span>
+    </div>
+  </div>
+  <div class="replay-body">
+    <div id="map-container"><div id="map"></div></div>
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl">Incidents</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-unplanned">—</div><div class="stat-lbl">Unplanned</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-high">—</div><div class="stat-lbl">High Priority</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-avg-dur">—</div><div class="stat-lbl">Avg Duration (min)</div></div>
+    </div>
+    <div class="table-wrap">
+      <table id="incident-table">
+        <thead><tr><th>Time</th><th>Cause</th><th>Priority</th><th>Corridor</th><th>Duration</th><th>Action</th></tr></thead>
+        <tbody id="incident-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INCIDENT DETAIL TAB ═══ -->
+<section class="panel hidden" id="panel-detail">
+  <div class="panel-header">
+    <h2>Incident Analysis — Full Pipeline</h2>
+    <div class="controls-row">
+      <label class="ctrl-label">Date
+        <select id="detail-date" class="ctrl-select"></select>
+      </label>
+      <label class="ctrl-label">Incident ID
+        <select id="detail-incident" class="ctrl-select"></select>
+      </label>
+      <button id="btn-run-sim" class="btn-primary">▶ Run Pipeline</button>
+    </div>
+  </div>
+
+  <!-- results area (hidden until sim runs) -->
+  <div id="detail-results" class="detail-results hidden">
+    <!-- row 1: metadata + prediction -->
+    <div class="detail-grid-2">
+      <div class="card" id="detail-meta"></div>
+      <div class="card" id="detail-prediction"></div>
+    </div>
+
+    <!-- row 2: CTM heatmap -->
+    <div class="card" id="detail-ctm">
+      <h3>CTM Space-Time Density Diagram</h3>
+      <canvas id="ctm-canvas" width="900" height="380"></canvas>
+      <div class="ctm-legend" id="ctm-legend"></div>
+    </div>
+
+    <!-- row 3: recommendation -->
+    <div class="detail-grid-3" id="detail-rec"></div>
+  </div>
+
+  <div id="detail-loading" class="loading hidden">
+    <div class="spinner"></div>
+    <span>Solving LWR PDE via Cell Transmission Model…</span>
+  </div>
+</section>
+
+<!-- ═══ CALIBRATION TAB ═══ -->
+<section class="panel hidden" id="panel-calibration">
+  <div class="panel-header">
+    <h2>Model Calibration — Simulation vs Reality</h2>
+    <p class="caption">Proof the simulation is grounded in 8,000 real historical incidents</p>
+  </div>
+  <div id="calibration-content" class="calibration-body"></div>
+</section>
+
+<!-- ═══ WHAT-IF TAB ═══ -->
+<section class="panel hidden" id="panel-whatif">
+  <div class="panel-header">
+    <h2>What-If Simulator</h2>
+    <p class="caption">Adjust incident parameters and re-run the CTM live</p>
+  </div>
+  <div class="whatif-controls">
+    <label class="ctrl-label">Corridor
+      <select id="wi-corridor" class="ctrl-select">
+        <option>ORR East 1</option><option>ORR East 2</option>
+        <option>Hosur Road</option><option>Bannerghatta Road</option>
+        <option>Tumkur Road</option><option>Mysore Road</option>
+        <option>Magadi Road</option><option>Non-corridor</option>
+      </select>
+    </label>
+    <label class="ctrl-label">Duration (min)
+      <input type="range" id="wi-dur" min="5" max="480" value="60" class="ctrl-range">
+      <span id="wi-dur-val" class="range-val">60</span>
+    </label>
+    <label class="ctrl-label">Capacity Loss (%)
+      <input type="range" id="wi-cap" min="5" max="95" value="55" class="ctrl-range">
+      <span id="wi-cap-val" class="range-val">55%</span>
+    </label>
+    <label class="ctrl-label">Upstream Demand (%)
+      <input type="range" id="wi-demand" min="30" max="95" value="70" class="ctrl-range">
+      <span id="wi-demand-val" class="range-val">70%</span>
+    </label>
+    <button id="btn-whatif" class="btn-primary">▶ Run Simulation</button>
+  </div>
+  <div id="whatif-results" class="hidden">
+    <div class="card">
+      <h3>Space-Time Density Diagram</h3>
+      <canvas id="wi-canvas" width="900" height="380"></canvas>
+    </div>
+    <div class="detail-grid-3" id="wi-rec"></div>
+  </div>
+  <div id="whatif-loading" class="loading hidden">
+    <div class="spinner"></div><span>Solving LWR PDE…</span>
+  </div>
+</section>
+
+<script src="/static/dashboard.js"></script>
+</body>
+</html>
