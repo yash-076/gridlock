@@ -1,0 +1,38 @@
+{
+  "n_nodes": 338,
+  "n_edges": 654,
+  "road_params": {
+    "ring_road": {
+      "v_free": 60,
+      "rho_jam": 120,
+      "capacity": 1800,
+      "seg_km": 2.0
+    },
+    "arterial": {
+      "v_free": 40,
+      "rho_jam": 140,
+      "capacity": 1500,
+      "seg_km": 1.0
+    },
+    "local": {
+      "v_free": 25,
+      "rho_jam": 160,
+      "capacity": 900,
+      "seg_km": 0.5
+    }
+  },
+  "corridor_type_map": {
+    "ORR East 1": "ring_road",
+    "ORR East 2": "ring_road",
+    "ORR West 1": "ring_road",
+    "ORR West 2": "ring_road",
+    "Bellary Road 1": "arterial",
+    "Bellary Road 2": "arterial",
+    "Bannerghatta Road": "arterial",
+    "Hosur Road": "arterial",
+    "Magadi Road": "arterial",
+    "Tumkur Road": "arterial",
+    "Mysore Road": "arterial",
+    "Non-corridor": "local"
+  }
+}
