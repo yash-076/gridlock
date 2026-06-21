@@ -210,9 +210,17 @@ p  { color: var(--muted); }
   background: rgba(14,159,110,0.15);
   color: var(--green);
 }
+.sidebar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.sidebar-item:hover .sidebar-icon { opacity: 0.9; }
 .sidebar-item.active .sidebar-icon { opacity: 1; }
-
-.sidebar-icon { font-size: 15px; width: 20px; text-align: center; }
 
 .sidebar-divider {
   height: 1px;
