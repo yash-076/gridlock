@@ -1,150 +1,144 @@
-# GRIDLOCK 🚦
-
+# GR🚦DLOCK BUTTERMASALA
 ### Event-Driven Congestion Forecasting & Response Simulation
-*Built for the Flipkart Hackathon — June 2026*
+
+Flipkart Hackathon — Problem Statement: "Planned & Unplanned Congestion"
 
 ---
 
-```
-GR●●●DLOCK
-[ predict → simulate → recommend ]
-```
+## Overview
+Bengaluru loses thousands of person-hours daily to traffic incidents — vehicle breakdowns on the ORR, tree falls after a monsoon shower, VIP convoys on arterials. Today, traffic police deploy resources from experience alone, with no quantified impact forecast and no post-event learning loop.
 
----
-
-## 📖 Project Overview
-
-Bengaluru loses thousands of person-hours daily to traffic incidents—vehicle breakdowns on the ORR, tree falls after a monsoon shower, VIP convoys on arterials. Today, traffic police deploy resources from experience alone, with no quantified impact forecast and no post-event learning loop.
-
-**GRIDLOCK** changes that in three steps:
+GRIDLOCK BUTTERMASALA changes that in three steps:
 
 | Step | What it does |
-|------|-------------|
-| **1. Predict** | ML model (XGBoost) forecasts how long an incident will last and how much road capacity it removes. |
-| **2. Simulate** | Cell Transmission Model (CTM) solves the LWR traffic-flow PDE and shows the shockwave queue forming and clearing as a space-time diagram. |
-| **3. Recommend** | Converts simulation output into a concrete deployment plan: officers, barricades, and diversion routes. |
+| :--- | :--- |
+| **Predict** | XGBoost ML model forecasts incident duration and road capacity loss |
+| **Simulate** | Cell Transmission Model (CTM) solves the LWR traffic-flow PDE and renders a shockwave space-time diagram |
+| **Recommend** | Converts simulation output into a concrete deployment plan: officers, barricades, and diversion route |
 
 ---
 
-## 🏗️ Project Architecture
-
-This project is built using a decoupled client-server architecture:
-- **Backend (Python / FastAPI):** Serves ML predictions, runs the CTM simulation, solves shortest path routing, and exposes APIs.
-- **Frontend (React / Vite):** Modern interactive dashboard with map visualisations, real-time what-if simulations, and calibration metrics.
-- **Data Pipeline (Python / Pandas / Scikit-Learn):** Scripts to clean, process raw data, build road graphs, and train models.
-- **Alternative Monolith (Streamlit):** A single-file Streamlit dashboard for quick local demos.
-
----
-
-## 🚀 Getting Started
-
-### 📋 Prerequisites
-Ensure you have the following installed:
-- Python 3.10+
-- Node.js 18+ & npm
-
----
-
-### ⚙️ 1. Set Up the Data Pipeline
-Before running either the React app or Streamlit dashboard, you need to run the data preprocessing and model training pipeline.
-
+## Quick Start
 ```bash
-# Clone the repository
-git clone https://github.com/yash-076/gridlock.git
-cd gridlock
-
-# Create and activate virtual environment
-python -m venv venv
-# On Windows:
-.\venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
-# Install Python dependencies
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# Run the full data pipeline (takes ~2–3 minutes)
-python src/clean.py          # Phase 0+1: clean & parse
-python src/features.py       # Phase 2:   feature engineering
-python src/graph_build.py    # Phase 2b:  road network graph
-python src/forecast_model.py # Phase 3:   train XGBoost models & generate SHAP plots
-python src/calibrate.py      # Phase 5:   calibrate CTM vs real data
-```
+# 2. Run the full pipeline (~2–3 minutes)
+cd gridlock/
+python src/clean.py         
+python src/features.py       
+python src/graph_build.py    
+python src/forecast_model.py 
+python src/calibrate.py      # calibrate CTM vs real data
 
----
-
-### 🖥️ 2. Running Locally (FastAPI + React)
-
-#### 🔸 Option A: Start the Backend (FastAPI)
-From the root directory:
-```bash
-uvicorn api.main:app --port 8000 --reload
-```
-The API documentation will be available at `http://127.0.0.1:8000/docs`.
-
-#### 🔸 Option B: Start the Frontend (React + Vite)
-In a new terminal window:
-```bash
-cd web
-npm install
-npm run dev
-```
-Open `http://localhost:5173` in your browser.
-
-> [!NOTE]
-> By default, the React app connects to `http://127.0.0.1:8000`. You can configure a different backend URL by creating a `web/.env` file and setting `VITE_API_URL`.
-
----
-
-### 📊 3. Running Locally (Streamlit Monolith)
-If you prefer to run the single-page Streamlit application:
-```bash
-# From the root directory:
+# 3. Launch the dashboard
 streamlit run app/dashboard.py
 ```
 
 ---
 
-## 🌐 Deployment Guide
-
-### 1. Deploy the Backend (FastAPI) on Render
-1. Sign up on [Render](https://render.com/) and connect your GitHub account.
-2. Click **New +** > **Web Service**.
-3. Select this repository.
-4. Set the following configurations:
-   - **Runtime:** `Python`
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn api.main:app --host 0.0.0.0 --port $PORT`
-   - **Instance Type:** `Free`
-5. Click **Deploy**. Once completed, Render will give you a public URL (e.g., `https://your-backend.onrender.com`).
-
-### 2. Deploy the Frontend (React) on Vercel
-1. Sign up on [Vercel](https://vercel.com/) and link your GitHub account.
-2. Click **Add New** > **Project** and import this repository.
-3. Configure the build:
-   - **Root Directory:** Choose `web`.
-   - **Environment Variables:**
-     - Add **Key:** `VITE_API_URL`
-     - **Value:** `https://your-backend.onrender.com` (your live Render URL)
-4. Click **Deploy**.
-
----
-
-## 🧠 CTM Simulation Engine (LWR PDE Solver)
-
-The core simulation is a **Cell Transmission Model (CTM)** solving the **Lighthill–Whitham–Richards (LWR)** kinematic wave PDE:
-
-$$\frac{\partial \rho}{\partial t} + \frac{\partial q}{\partial x} = 0$$
-
-Each corridor is modelled as **25 cells × 200 m = 5 km**, with the incident placed at cell 12. The solver runs the Godunov update scheme at a 12-second timestep:
-- $S_i = \min(\rho_i \cdot v_{\text{free}}, Q_i)$ (Sending function)
-- $R_i = \min(Q_i, w \cdot (\rho_{\text{jam}} - \rho_i))$ (Receiving function)
-- $y_i = \min(S_i, R_{i+1})$ (Inter-cell flow)
-- $\rho_i(t+\Delta t) = \rho_i(t) + \frac{\Delta t}{\Delta x} \cdot (y_{i-1} - y_i)$ (Density update)
+## Repository Structure
+```
+gridlock/
+├── data/
+│   ├── raw/                     # Original Bengaluru Traffic Police CSV (~8,000 rows)
+│   └── processed/               # cleaned.parquet, features.parquet, ML models, road graph
+├── reports/
+│   ├── data_quality.md          # Cleaning audit (missing values, label distributions)
+│   ├── calibration_plot.png     # Simulated vs actual duration scatter (R² annotated)
+│   └── shap_summary.png         # Feature importance for the duration model
+├── src/
+│   ├── clean.py                 # Phase 0+1: load, parse, deduplicate, quality report
+│   ├── features.py              # Phase 2:   temporal, spatial, event, historical features
+│   ├── graph_build.py           # Phase 2b:  NetworkX road graph (junctions + corridors)
+│   ├── forecast_model.py        # Phase 3:   XGBoost duration & capacity-loss models
+│   ├── ctm_simulation.py        # Phase 4:   CTM / LWR PDE solver (Godunov scheme)
+│   ├── calibrate.py             # Phase 5:   scipy optimisation + calibration plot
+│   └── recommend.py             # Phase 6:   officers / barricades / Dijkstra diversion
+└── app/
+    └── dashboard.py             # Phase 7:   Streamlit interactive dashboard
+```
 
 ---
 
-## 🛠️ Tech Stack
-- **Frontend:** React, Vite, Plotly.js, Vanilla CSS
-- **Backend:** FastAPI, Uvicorn, Python
-- **Libraries:** Pandas, NumPy, Scikit-Learn, XGBoost, SHAP, NetworkX, SciPy
+## Simulation Engine
+The simulation uses a **Cell Transmission Model (CTM)**, the standard discrete-time approximation of the Lighthill–Whitham–Richards (LWR) kinematic wave PDE:
+
+$$\frac{\partial\rho}{\partial t} + \frac{\partial q}{\partial x} = 0$$
+
+with a triangular fundamental diagram and Godunov flux.
+
+### What the model does
+Each affected corridor is divided into $N$ equal cells. When an incident is reported, the incident cell's capacity drops by a predicted fraction for the predicted duration. The CTM update rule propagates the resulting density wave backward (upstream), forming a queue that grows until capacity is restored, then dissipates forward.
+
+Each corridor is modelled as 25 cells × 200 m = 5 km, with the incident placed at cell 12. The solver runs the Godunov update scheme at a 12-second timestep:
+
+#### Variables
+```
+  ρ_i       density in cell i       [veh/km]
+  v_free    free-flow speed         [km/h]
+  w         backward wave speed     [km/h]
+  ρ_jam     jam density             [veh/km]
+  Δt        timestep  =  12 s
+  Δx        cell length = 200 m
+```
+
+#### Godunov Update
+```
+  S_i  =  min( ρ_i · v_free,  capacity_i )           (sending function)
+  R_i  =  min( capacity_i,    w · (ρ_jam − ρ_i) )    (receiving function)
+  y_i  =  min( S_i,  R_{i+1} )                        (inter-cell flow)
+
+  ρ_i(t + Δt)  =  ρ_i(t)  +  (Δt / Δx) · ( y_{i−1} − y_i )
+```
+
+Road type parameters used by the solver:
+
+| Road Type | v_free (km/h) | ρ_jam (veh/km) | Capacity (veh/h) |
+| :--- | :---: | :---: | :---: |
+| Ring road (ORR, Bellary Rd) | 60 | 120 | 1,800 |
+| Arterial (Hosur, Bannerghatta, Magadi, Tumkur, Mysore) | 40 | 140 | 1,500 |
+| Local / Non-corridor | 25 | 160 | 900 |
+
+The output is a space-time density heatmap (shockwave diagram) showing the queue forming upstream of the incident and dissipating after capacity is restored.
+
+### What the dataset provides
+The dataset contains incident location, cause, priority, corridor, and resolved timestamps but no speed, density, or flow sensor readings. Initial conditions and capacity parameters are therefore derived from corridor type, not measured directly.
+
+---
+
+## ML Models
+| Model | Target | Algorithm | Notes |
+| :--- | :--- | :--- | :--- |
+| **Duration** | duration_minutes | XGBoost regressor | Log-transformed target; trained on resolved incidents only |
+| **Capacity loss** | capacity_loss_fraction | XGBoost regressor | Heuristic label (see Assumptions); not directly observed |
+
+Top features (SHAP): `hist_avg_duration`, `hour_of_day`, `corridor_incident_7d`, `priority_num`, `event_cause_enc`.
+
+---
+
+## Dashboard Views
+| Tab | What you see |
+| :--- | :--- |
+| **Replay Mode** | Timeline slider steps through a historical day; incidents appear on a dark Plotly map of Bengaluru coloured by event cause |
+| **Incident Detail** | Select any incident to view ML prediction + CTM space-time diagram + officer/barricade/diversion recommendation |
+| **Calibration** | Scatter plot of simulated clearance time vs actual duration (R² annotated) + SHAP feature importance |
+| **What-If** | Adjust corridor / duration / priority / closure and trigger a live CTM re-run |
+
+---
+
+## Assumptions
+Being explicit about assumptions is a scientific strength, not a weakness.
+
+- **Synthetic corridor cells** — The dataset contains point coordinates, not road polylines. Each corridor is modelled as a uniform 1-D array of 25 × 200 m cells with the incident placed at the midpoint. This is standard for single-link CTM studies and is explicitly documented.
+- **Heuristic capacity-loss label** — There is no ground-truth sensor data for capacity loss. A rule-based label is derived from `requires_road_closure`, `priority`, and `event_cause`, then the model is trained to reproduce this heuristic. The label logic is published in `src/forecast_model.py` and tuned against real durations in Phase 5.
+- **Dataset composition** — The ~8,000 rows are dominated by reactive micro-incidents (breakdowns, punctures, potholes) rather than planned mega-events (rallies, festivals). GRIDLOCK generalises by treating every incident as "a capacity drop of estimated magnitude at a network point for a predicted duration" — the physics applies regardless of cause.
+- **Road graph approximation** — Junction connectivity is reconstructed from the junction and corridor columns of the CSV. Edge lengths are approximated from the coordinate spread of incidents along each corridor. This is adequate for diversion routing at hackathon scope; production would use OpenStreetMap polylines.
+
+---
+
+## Tech Stack
+`pandas` · `numpy` · `scikit-learn` · `xgboost` · `shap` · `networkx` · `scipy` · `plotly` · `folium` · `streamlit`
+
+---
+Built for the Flipkart Hackathon — June 2026
