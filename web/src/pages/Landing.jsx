@@ -42,7 +42,7 @@ export function Landing({ onNavigate }) {
     {
       id: 'incident',
       title: 'Incident Analysis',
-      desc: 'XGBoost models for duration/capacity prediction, CTM shockwave simulation, and recommendation engine.',
+      desc: 'AI models for duration/capacity prediction, CTM shockwave simulation, and recommendation engine.',
       className: 'incident'
     },
     {

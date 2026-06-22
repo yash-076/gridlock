@@ -220,7 +220,7 @@ function renderDetail(data) {
   // Prediction card
   const delta = inc.actual_duration ? `(Δ ${(pred.predicted_duration_min - inc.actual_duration).toFixed(0)} min vs actual)` : '';
   document.getElementById('detail-prediction').innerHTML = `
-    <h3>ML Prediction (XGBoost)</h3>
+    <h3>ML Prediction (AI Model)</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
       <div class="stat-card"><div class="stat-val">${pred.predicted_duration_min.toFixed(0)}</div><div class="stat-lbl">Duration (min) ${delta}</div></div>
       <div class="stat-card"><div class="stat-val">${(pred.predicted_capacity_loss * 100).toFixed(0)}%</div><div class="stat-lbl">Capacity Loss</div></div>

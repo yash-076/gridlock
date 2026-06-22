@@ -140,7 +140,7 @@ export function Incident({ date }) {
       {/* ML Prediction */}
       {prediction && (
         <>
-          <SectionHeader title="ML Prediction" sub="XGBoost model trained on 8,000+ historical incidents" />
+          <SectionHeader title="ML Prediction" sub="AI model trained on 8,000+ historical incidents" />
           <div className="grid-2" style={{ marginBottom: 20 }}>
             <MetricCard
               value={`${Math.round(prediction.predicted_duration_min)} min`}
