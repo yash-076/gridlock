@@ -229,6 +229,45 @@ export function Landing({ onNavigate }) {
           </div>
         </section>
 
+        {/* Traffic Physics & Methodology */}
+        <section className="landing-model-section">
+          <div className="landing-section-title">Traffic Physics &amp; Methodology</div>
+          <div className="landing-model-card">
+            <div className="landing-model-math-container">
+              <div className="landing-model-math">
+                <div className="math-fraction-expr">
+                  <span className="fraction">
+                    <span className="numerator">∂ρ</span>
+                    <span className="denominator">∂t</span>
+                  </span>
+                  <span className="math-operator">+</span>
+                  <span className="fraction">
+                    <span className="numerator">∂q</span>
+                    <span className="denominator">∂x</span>
+                  </span>
+                  <span className="math-operator">=</span>
+                  <span className="math-number">0</span>
+                </div>
+              </div>
+              <span className="landing-model-math-label">LWR Conservation Law PDE</span>
+            </div>
+            
+            <div className="landing-model-desc-container">
+              <p className="landing-model-desc">
+                We use a <strong>Cell Transmission Model (CTM)</strong>, the standard discrete-time approximation of the Lighthill–Whitham–Richards (LWR) kinematic wave PDE (shown on the left).
+              </p>
+              <p className="landing-model-desc-sub">
+                Our model implements this with a triangular fundamental diagram and Godunov flux, enabling realistic shockwave propagation and flow constraint modeling across the highway network.
+              </p>
+              <div className="landing-model-chips">
+                <span className="landing-model-chip">Cell Transmission Model</span>
+                <span className="landing-model-chip">Triangular Fundamental Diagram</span>
+                <span className="landing-model-chip">Godunov Numerical Flux</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Dynamic Navigation Cards */}
         <div className="landing-cards">
           {cards.map(c => (

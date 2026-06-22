@@ -1017,3 +1017,177 @@ input[type="range"] {
   }
 }
 
+/* ── Model Methodology Section ── */
+.landing-model-section {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 16px;
+}
+
+.landing-model-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  text-align: left;
+  box-shadow: 0 1px 4px rgba(17,17,17,0.02);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-model-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  box-shadow: 0 8px 24px rgba(14, 159, 110, 0.06), 0 0 0 1px var(--green-bd);
+}
+
+.landing-model-math-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.landing-model-math {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 20px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.math-fraction-expr {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.fraction {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.numerator {
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+  font-style: italic;
+}
+
+.denominator {
+  font-style: italic;
+}
+
+.math-operator {
+  font-weight: 400;
+  padding: 0 4px;
+  color: var(--green);
+}
+
+.math-number {
+  font-weight: 500;
+}
+
+.landing-model-math-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.landing-model-desc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.landing-model-desc {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.landing-model-desc strong {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom: 2px solid var(--green-bd);
+  padding-bottom: 1px;
+}
+
+.landing-model-desc-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.landing-model-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.landing-model-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.landing-model-card:hover .landing-model-chip {
+  color: var(--ink);
+  border-color: var(--green-bd);
+  background: var(--green-bg);
+}
+
+.landing-model-chip::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .landing-model-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 20px;
+  }
+  .landing-model-math {
+    min-width: unset;
+    width: 100%;
+  }
+}
+
+
