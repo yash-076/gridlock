@@ -1,144 +1,239 @@
 # GR🚦DLOCK BUTTERMASALA
+<div align="center">
+
+<br/>
+
+```
+ ██████╗ ██████╗   ██╗   ██████╗  ██╗      ██████╗   ██████╗ ██╗  ██╗
+██╔════╝ ██╔══██╗  ██║   ██╔══██╗ ██║     ██╔═══██╗ ██╔════╝ ██║ ██╔╝
+██║  ███╗██████╔╝  ██║   ██║  ██║ ██║     ██║   ██║ ██║      █████╔╝
+██║   ██║██╔══██╗  ██║   ██║  ██║ ██║     ██║   ██║ ██║      ██╔═██╗
+╚██████╔╝██║  ██║  ██║   ██████╔╝ ███████╗╚██████╔╝ ╚██████╗ ██║  ██╗
+ ╚═════╝ ╚═╝  ╚═╝  ╚═╝   ╚═════╝  ╚══════╝ ╚═════╝   ╚═════╝ ╚═╝  ╚═╝
+```
+
 ### Event-Driven Congestion Forecasting & Response Simulation
 
-Flipkart Hackathon — Problem Statement: "Planned & Unplanned Congestion"
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-gridlock-0E9F6E?style=for-the-badge&logo=vercel&logoColor=white)](https://gridlock-frontend-roan.vercel.app/)
+[![Hackathon](https://img.shields.io/badge/Flipkart-Gridlock%20Hackathon-F2A93B?style=for-the-badge)](https://gridlock-frontend-roan.vercel.app/)
+[![Python](https://img.shields.io/badge/Python-3.10+-111110?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-E5484D?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
 
----
+<br/>
 
-## Overview
-Bengaluru loses thousands of person-hours daily to traffic incidents — vehicle breakdowns on the ORR, tree falls after a monsoon shower, VIP convoys on arterials. Today, traffic police deploy resources from experience alone, with no quantified impact forecast and no post-event learning loop.
+> *Bengaluru loses thousands of person-hours daily to traffic incidents.*
+> *GRIDLOCK doesn't react to congestion, it forecasts it.*
 
-GRIDLOCK BUTTERMASALA changes that in three steps:
+<br/>
 
-| Step | What it does |
-| :--- | :--- |
-| **Predict** | XGBoost ML model forecasts incident duration and road capacity loss |
-| **Simulate** | Cell Transmission Model (CTM) solves the LWR traffic-flow PDE and renders a shockwave space-time diagram |
-| **Recommend** | Converts simulation output into a concrete deployment plan: officers, barricades, and diversion route |
+**[→ Try the live demo](https://gridlock-frontend-roan.vercel.app/)**
 
----
+<br/>
 
-## Quick Start
+</div>
+
+## The problem
+
+Vehicle breakdowns on the ORR. Tree falls after a monsoon shower. VIP convoys on arterials. Political rallies. Festivals. Construction.
+
+Today, traffic police deploy resources from **experience alone**. No quantified impact forecast, no simulation of how the queue will grow, no post-event learning loop. The same incident on the same corridor at the same time of day produces wildly different response quality depending on who is on shift.
+
+GRIDLOCK closes that gap in three steps.
+
+<br/>
+
+## How it works
+
+```
+ INCIDENT REPORT
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  PREDICT                                                        │
+│  AI model — trained on resolved Bengaluru incidents             │
+│  → predicted duration   → predicted capacity loss               │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  SIMULATE                                                       │
+│  Cell Transmission Model (CTM) — LWR kinematic wave PDE         │
+│  → shockwave space-time diagram  → peak queue length & timing   │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  RECOMMEND                                                      │
+│  Simulation output → concrete deployment plan                   │
+│  → officers required  → barricades  → diversion route           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+<br/>
+
+## Quick start
+
 ```bash
-# 1. Install dependencies
+git clone https://github.com/your-org/gridlock.git
+cd gridlock
 pip install -r requirements.txt
 
-# 2. Run the full pipeline (~2–3 minutes)
-cd gridlock/
-python src/clean.py         
-python src/features.py       
-python src/graph_build.py    
-python src/forecast_model.py 
-python src/calibrate.py      # calibrate CTM vs real data
+python src/clean.py
+python src/features.py
+python src/graph_build.py
+python src/forecast_model.py
+python src/calibrate.py
 
-# 3. Launch the dashboard
 streamlit run app/dashboard.py
 ```
 
----
+<br/>
 
-## Repository Structure
+## Repository structure
+
 ```
 gridlock/
 ├── data/
-│   ├── raw/                     # Original Bengaluru Traffic Police CSV (~8,000 rows)
-│   └── processed/               # cleaned.parquet, features.parquet, ML models, road graph
+│   ├── raw/
+│   └── processed/
 ├── reports/
-│   ├── data_quality.md          # Cleaning audit (missing values, label distributions)
-│   ├── calibration_plot.png     # Simulated vs actual duration scatter (R² annotated)
-│   └── shap_summary.png         # Feature importance for the duration model
+│   ├── data_quality.md
+│   ├── calibration_plot.png
+│   └── shap_summary.png
 ├── src/
-│   ├── clean.py                 # Phase 0+1: load, parse, deduplicate, quality report
-│   ├── features.py              # Phase 2:   temporal, spatial, event, historical features
-│   ├── graph_build.py           # Phase 2b:  NetworkX road graph (junctions + corridors)
-│   ├── forecast_model.py        # Phase 3:   XGBoost duration & capacity-loss models
-│   ├── ctm_simulation.py        # Phase 4:   CTM / LWR PDE solver (Godunov scheme)
-│   ├── calibrate.py             # Phase 5:   scipy optimisation + calibration plot
-│   └── recommend.py             # Phase 6:   officers / barricades / Dijkstra diversion
+│   ├── clean.py
+│   ├── features.py
+│   ├── graph_build.py
+│   ├── forecast_model.py
+│   ├── ctm_simulation.py
+│   ├── calibrate.py
+│   └── recommend.py
 └── app/
-    └── dashboard.py             # Phase 7:   Streamlit interactive dashboard
+    └── dashboard.py
 ```
 
----
+<br/>
 
-## Simulation Engine
-The simulation uses a **Cell Transmission Model (CTM)**, the standard discrete-time approximation of the Lighthill–Whitham–Richards (LWR) kinematic wave PDE:
+## The simulation engine
 
-$$\frac{\partial\rho}{\partial t} + \frac{\partial q}{\partial x} = 0$$
+The core of GRIDLOCK is a real traffic-flow solver, not a heuristic.
 
-with a triangular fundamental diagram and Godunov flux.
+We implement the **Cell Transmission Model (CTM)** — the standard discrete-time approximation of the Lighthill–Whitham–Richards (LWR) kinematic wave PDE:
 
-### What the model does
-Each affected corridor is divided into $N$ equal cells. When an incident is reported, the incident cell's capacity drops by a predicted fraction for the predicted duration. The CTM update rule propagates the resulting density wave backward (upstream), forming a queue that grows until capacity is restored, then dissipates forward.
+$$\frac{\partial \rho}{\partial t} + \frac{\partial q}{\partial x} = 0$$
 
-Each corridor is modelled as 25 cells × 200 m = 5 km, with the incident placed at cell 12. The solver runs the Godunov update scheme at a 12-second timestep:
+Each corridor is divided into 25 cells × 200 m = 5 km. When an incident is reported, the incident cell's capacity drops by the predicted fraction for the predicted duration. The Godunov update rule propagates the density wave backward (upstream), forming a queue that grows until capacity is restored and then dissipates forward.
 
-#### Variables
+**Godunov update at each timestep (Δt = 12 s):**
+
 ```
-  ρ_i       density in cell i       [veh/km]
-  v_free    free-flow speed         [km/h]
-  w         backward wave speed     [km/h]
-  ρ_jam     jam density             [veh/km]
-  Δt        timestep  =  12 s
-  Δx        cell length = 200 m
+S_i  =  min( ρ_i · v_free,  capacity_i )           ← sending function
+R_i  =  min( capacity_i,    w · (ρ_jam − ρ_i) )    ← receiving function
+y_i  =  min( S_i,  R_{i+1} )                        ← inter-cell flow
+
+ρ_i(t + Δt)  =  ρ_i(t)  +  (Δt / Δx) · ( y_{i−1} − y_i )
 ```
 
-#### Godunov Update
+**Road-type parameters:**
+
+| Road type | v_free | ρ_jam | Capacity |
+|:---|:---:|:---:|:---:|
+| Ring road (ORR, Bellary Rd) | 60 km/h | 120 veh/km | 1,800 veh/h |
+| Arterial (Hosur, Bannerghatta, Magadi, Tumkur, Mysore) | 40 km/h | 140 veh/km | 1,500 veh/h |
+| Local / Non-corridor | 25 km/h | 160 veh/km | 900 veh/h |
+
+The output is a **space-time density heatmap** — the shockwave forming upstream of the incident and dissipating after capacity is restored.
+
+<br/>
+
+## ML models
+
+| Model | Target | Algorithm | Training set |
+|:---|:---|:---|:---|
+| Duration | `duration_minutes` | AI model (log-transformed target) | Resolved incidents with known `closed_datetime` |
+| Capacity loss | `capacity_loss_fraction` | AI model | Heuristic label from `requires_road_closure` + `priority` + `event_cause` |
+
+**Top SHAP features** (duration model):
+
 ```
-  S_i  =  min( ρ_i · v_free,  capacity_i )           (sending function)
-  R_i  =  min( capacity_i,    w · (ρ_jam − ρ_i) )    (receiving function)
-  y_i  =  min( S_i,  R_{i+1} )                        (inter-cell flow)
-
-  ρ_i(t + Δt)  =  ρ_i(t)  +  (Δt / Δx) · ( y_{i−1} − y_i )
+hist_avg_duration          ████████████████████  strongest signal
+hour_of_day                ████████████████
+corridor_incident_7d       █████████████
+priority_num               ██████████
+event_cause_enc            ████████
 ```
 
-Road type parameters used by the solver:
+The `hist_avg_duration` feature is simultaneously the strongest predictor and the mechanism by which the system improves over time — every resolved incident sharpens the next prediction on that corridor.
 
-| Road Type | v_free (km/h) | ρ_jam (veh/km) | Capacity (veh/h) |
-| :--- | :---: | :---: | :---: |
-| Ring road (ORR, Bellary Rd) | 60 | 120 | 1,800 |
-| Arterial (Hosur, Bannerghatta, Magadi, Tumkur, Mysore) | 40 | 140 | 1,500 |
-| Local / Non-corridor | 25 | 160 | 900 |
+<br/>
 
-The output is a space-time density heatmap (shockwave diagram) showing the queue forming upstream of the incident and dissipating after capacity is restored.
+## Dashboard
 
-### What the dataset provides
-The dataset contains incident location, cause, priority, corridor, and resolved timestamps but no speed, density, or flow sensor readings. Initial conditions and capacity parameters are therefore derived from corridor type, not measured directly.
-
----
-
-## ML Models
-| Model | Target | Algorithm | Notes |
-| :--- | :--- | :--- | :--- |
-| **Duration** | duration_minutes | XGBoost regressor | Log-transformed target; trained on resolved incidents only |
-| **Capacity loss** | capacity_loss_fraction | XGBoost regressor | Heuristic label (see Assumptions); not directly observed |
-
-Top features (SHAP): `hist_avg_duration`, `hour_of_day`, `corridor_incident_7d`, `priority_num`, `event_cause_enc`.
-
----
-
-## Dashboard Views
 | Tab | What you see |
-| :--- | :--- |
-| **Replay Mode** | Timeline slider steps through a historical day; incidents appear on a dark Plotly map of Bengaluru coloured by event cause |
-| **Incident Detail** | Select any incident to view ML prediction + CTM space-time diagram + officer/barricade/diversion recommendation |
-| **Calibration** | Scatter plot of simulated clearance time vs actual duration (R² annotated) + SHAP feature importance |
-| **What-If** | Adjust corridor / duration / priority / closure and trigger a live CTM re-run |
+|:---|:---|
+| **Replay** | Timeline slider steps through a historical day; incidents appear on a map of Bengaluru coloured by cause |
+| **Incident detail** | Select any incident → AI prediction + CTM space-time diagram + officer / barricade / diversion plan |
+| **Calibration** | Simulated clearance time vs actual duration scatter (R² annotated) + SHAP importance chart |
+| **What-if** | Adjust corridor / duration / priority / closure and trigger a live CTM re-run |
 
----
+<br/>
 
 ## Assumptions
+
 Being explicit about assumptions is a scientific strength, not a weakness.
 
-- **Synthetic corridor cells** — The dataset contains point coordinates, not road polylines. Each corridor is modelled as a uniform 1-D array of 25 × 200 m cells with the incident placed at the midpoint. This is standard for single-link CTM studies and is explicitly documented.
-- **Heuristic capacity-loss label** — There is no ground-truth sensor data for capacity loss. A rule-based label is derived from `requires_road_closure`, `priority`, and `event_cause`, then the model is trained to reproduce this heuristic. The label logic is published in `src/forecast_model.py` and tuned against real durations in Phase 5.
-- **Dataset composition** — The ~8,000 rows are dominated by reactive micro-incidents (breakdowns, punctures, potholes) rather than planned mega-events (rallies, festivals). GRIDLOCK generalises by treating every incident as "a capacity drop of estimated magnitude at a network point for a predicted duration" — the physics applies regardless of cause.
-- **Road graph approximation** — Junction connectivity is reconstructed from the junction and corridor columns of the CSV. Edge lengths are approximated from the coordinate spread of incidents along each corridor. This is adequate for diversion routing at hackathon scope; production would use OpenStreetMap polylines.
+**Synthetic corridor cells** — The dataset contains point coordinates, not road polylines. Each corridor is modelled as a uniform 1-D array of 25 × 200 m cells with the incident at the midpoint. This is standard practice for single-link CTM studies.
 
----
+**Heuristic capacity-loss label** — No ground-truth sensor data exists for capacity loss. A rule-based label is derived from `requires_road_closure`, `priority`, and `event_cause`, then tuned against observed clearance times in `calibrate.py`. The label logic is fully published in `src/forecast_model.py`.
 
-## Tech Stack
-`pandas` · `numpy` · `scikit-learn` · `xgboost` · `shap` · `networkx` · `scipy` · `plotly` · `folium` · `streamlit`
+**Initial density** — Set to 40% of jam density during peak hours (07:00–10:00, 17:00–20:00 IST) and 20% off-peak. Conservative estimate consistent with BBMP corridor surveys. Production replacement: real-time probe-vehicle density or loop detector feeds.
 
----
-Built for the Flipkart Hackathon — June 2026
+**Dataset composition** — The dataset is dominated by reactive micro-incidents (breakdowns, punctures, potholes). GRIDLOCK generalises by treating every incident as *a capacity drop of estimated magnitude at a network point for a predicted duration* — the physics applies regardless of cause. As planned-event records accumulate, the model's accuracy for those event types compounds automatically.
+
+**Road graph** — Junction connectivity is reconstructed from the `junction` and `corridor` columns of the dataset. Edge lengths are approximated from the coordinate spread of incidents along each corridor. Production would use MapMyIndia polylines and routing APIs.
+
+<br/>
+
+## Tech stack
+
+| Layer | Libraries |
+|:---|:---|
+| Data | `pandas` · `numpy` · `scikit-learn` |
+| ML | `xgboost` · `shap` · `lifelines` |
+| Simulation | `scipy` · `numpy` |
+| Graph | `networkx` |
+| Visualisation | `plotly` · `folium` · `matplotlib` |
+| App | `streamlit` |
+
+<br/>
+
+## Partners
+
+<table>
+<tr>
+<td align="center" width="50%">
+<br/>
+<b>MapMyIndia</b>
+<!-- <br/><br/>
+Proprietary mapping technology and localized traffic intelligence — the same infrastructure used across India's navigation, logistics, and urban planning systems.
+<br/><br/> -->
+</td>
+<td align="center" width="50%">
+<br/>
+<b>Bengaluru Traffic Police · ASTraM</b>
+<!-- <br/><br/>
+Real-world traffic datasets built from extensive urban traffic analysis and field intelligence. Authentic mobility challenges, real data.
+<br/><br/> -->
+</td>
+</tr>
+</table>
+
+<br/>
+
+<div align="center">
+
+Built for the **Flipkart Gridlock Hackathon · June 2026** · Bengaluru
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-gridlock--frontend--roan.vercel.app-0E9F6E?style=flat-square&logo=vercel)](https://gridlock-frontend-roan.vercel.app/)
+
+</div>
