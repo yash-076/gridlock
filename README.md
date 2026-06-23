@@ -51,7 +51,7 @@ GRIDLOCK closes that gap in three steps.
 <br/>
 
 ## Video
-[![Watch the video](https://img.youtube.com/vi//maxresdefault.jpg)](https://youtu.be/U8rrF_z9AoY?si=1w7i8jD_KJnmsAMd)
+[![Watch the video](images/yt.png)](https://youtu.be/U8rrF_z9AoY?si=1w7i8jD_KJnmsAMd)
 
 <br/>
 
