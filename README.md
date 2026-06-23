@@ -71,19 +71,16 @@ GRIDLOCK closes that gap in three steps.
 
 <br/>
 
-## In Action
- 
-<div align="center">
-<!-- | | |
-|:---:|:---:|
-| ![](docs/images/1.png) | ![](docs/images/2.png) |
-| ![](docs/images/3.png) | ![](docs/images/4.png) |
-| ![](docs/images/1.png) | ![](docs/images/2.png) |
-| ![](docs/images/3.png) | ![](docs/images/4.png) | -->
- 
-</div>
-<br/>
 
+## In Action
+
+| | |
+|:---:|:---:|
+| ![Step 1](images/2.png) | ![Step 2](images/1.png) |
+| ![Step 3](images/3.png) | ![Step 4](images/5.png) |
+
+## Video
+[![Watch the video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://youtu.be/YOUR_VIDEO_ID)
 
 ## Quick start
 
