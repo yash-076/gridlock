@@ -88,7 +88,7 @@ GRIDLOCK closes that gap in three steps.
 
 To run the API backend:
 ```bash
-git clone https://github.com/your-org/gridlock.git
+git clone https://github.com/yash-076/gridlock.git
 cd gridlock
 pip install -r requirements.txt
 uvicorn api.main:app --port 8000 --reload
@@ -100,6 +100,9 @@ cd web
 npm install
 npm run dev
 ```
+
+**Frontend**: http://localhost:5173
+**Backend API**: http://localhost:8000
 
 <br/>
 
