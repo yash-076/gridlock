@@ -316,7 +316,7 @@ def calibration():
         with open(shap_path, "rb") as f:
             shap_b64 = base64.b64encode(f.read()).decode()
     if dq_path.exists():
-        dq_text = dq_path.read_text()
+        dq_text = dq_path.read_text(encoding="utf-8", errors="ignore")
 
     return {
         "calibration_plot_b64": cal_b64,

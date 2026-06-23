@@ -9,6 +9,8 @@ data/
 
 # Reports & generated plots
 reports/*.png
+!reports/calibration_plot.png
+!reports/shap_summary.png
 
 # Node / Frontend modules & builds
 node_modules/

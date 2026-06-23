@@ -17,7 +17,6 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-gridlock-0E9F6E?style=for-the-badge&logo=vercel&logoColor=white)](https://gridlock-frontend-roan.vercel.app/)
 [![Hackathon](https://img.shields.io/badge/Flipkart-Gridlock%20Hackathon-F2A93B?style=for-the-badge)](https://gridlock-frontend-roan.vercel.app/)
 [![Python](https://img.shields.io/badge/Python-3.10+-111110?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-E5484D?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
 
 <br/>
 
@@ -52,32 +51,32 @@ GRIDLOCK closes that gap in three steps.
 <br/>
 
 ## Video
-[![Watch the video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://youtu.be/YOUR_VIDEO_ID)
+[![Watch the video](https://img.youtube.com/vi//maxresdefault.jpg)](https://youtu.be/U8rrF_z9AoY?si=1w7i8jD_KJnmsAMd)
 
 <br/>
 
 ## How it works
 
 ```
- INCIDENT REPORT
-       │
-       ▼
+                     INCIDENT REPORT
+                           │
+                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PREDICT                                                        │
+│                       PREDICT                                   │
 │  AI model — trained on resolved Bengaluru incidents             │
 │  → predicted duration   → predicted capacity loss               │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  SIMULATE                                                       │
+│                       SIMULATE                                  │
 │  Cell Transmission Model (CTM) — LWR kinematic wave PDE         │
 │  → shockwave space-time diagram  → peak queue length & timing   │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  RECOMMEND                                                      │
+│                       RECOMMEND                                 │
 │  Simulation output → concrete deployment plan                   │
 │  → officers required  → barricades  → diversion route           │
 └─────────────────────────────────────────────────────────────────┘
@@ -87,18 +86,19 @@ GRIDLOCK closes that gap in three steps.
 
 ## Quick start
 
+To run the API backend:
 ```bash
 git clone https://github.com/your-org/gridlock.git
 cd gridlock
 pip install -r requirements.txt
+uvicorn api.main:app --port 8000 --reload
+```
 
-python src/clean.py
-python src/features.py
-python src/graph_build.py
-python src/forecast_model.py
-python src/calibrate.py
-
-streamlit run app/dashboard.py
+To run the React frontend:
+```bash
+cd web
+npm install
+npm run dev
 ```
 
 <br/>
@@ -107,14 +107,16 @@ streamlit run app/dashboard.py
 
 ```
 gridlock/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── reports/
+├── api/                  # FastAPI backend server
+│   └── main.py
+├── data/                 # Datasets
+│   ├── raw/              # Raw CSV events
+│   └── processed/        # Processed features and joblib models
+├── reports/              # Model performance, calibration & shap plots
 │   ├── data_quality.md
 │   ├── calibration_plot.png
 │   └── shap_summary.png
-├── src/
+├── src/                  # ML Pipeline & simulation engine core modules
 │   ├── clean.py
 │   ├── features.py
 │   ├── graph_build.py
@@ -122,8 +124,11 @@ gridlock/
 │   ├── ctm_simulation.py
 │   ├── calibrate.py
 │   └── recommend.py
-└── app/
-    └── dashboard.py
+└── web/                  # React + Vite frontend web app
+    ├── src/
+    ├── index.html
+    ├── package.json
+    └── vite.config.js
 ```
 
 <br/>
@@ -217,7 +222,7 @@ Being explicit about assumptions is a scientific strength, not a weakness.
 | Simulation | `scipy` · `numpy` |
 | Graph | `networkx` |
 | Visualisation | `plotly` · `folium` · `matplotlib` |
-| App | `streamlit` |
+| App | `FastAPI` (Backend) · `React` + `Vite` (Frontend) |
 
 <br/>
 
