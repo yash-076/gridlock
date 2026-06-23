@@ -59,25 +59,25 @@ GRIDLOCK closes that gap in three steps.
 ## How it works
 
 ```
- INCIDENT REPORT
-       │
-       ▼
+                     INCIDENT REPORT
+                           │
+                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PREDICT                                                        │
-│  AI model — trained on resolved Bengaluru incidents             │
+│                        PREDICT                                  │
+│  AI model - trained on resolved Bengaluru incidents             │
 │  → predicted duration   → predicted capacity loss               │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  SIMULATE                                                       │
+│                       SIMULATE                                  │
 │  Cell Transmission Model (CTM) — LWR kinematic wave PDE         │
 │  → shockwave space-time diagram  → peak queue length & timing   │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  RECOMMEND                                                      │
+│                       RECOMMEND                                 │
 │  Simulation output → concrete deployment plan                   │
 │  → officers required  → barricades  → diversion route           │
 └─────────────────────────────────────────────────────────────────┘
