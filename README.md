@@ -71,6 +71,20 @@ GRIDLOCK closes that gap in three steps.
 
 <br/>
 
+## In Action
+ 
+<div align="center">
+<!-- | | |
+|:---:|:---:|
+| ![](docs/images/1.png) | ![](docs/images/2.png) |
+| ![](docs/images/3.png) | ![](docs/images/4.png) |
+| ![](docs/images/1.png) | ![](docs/images/2.png) |
+| ![](docs/images/3.png) | ![](docs/images/4.png) | -->
+ 
+</div>
+<br/>
+
+
 ## Quick start
 
 ```bash
